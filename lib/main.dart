@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         title: 'Namer App',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
         ),
         home: MyHomePage(),
       ),
@@ -38,22 +38,64 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    var pair = appState.current;
+    final theme = Theme.of(context);
+    final style = theme.textTheme.displaySmall!.copyWith(
+      color: theme.colorScheme.onSecondary,
+    );
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: Text('Name-r'),
+        backgroundColor: theme.colorScheme.secondary,
+        title: Text('Name-r App', style: style),
       ),
-      body: Column(
-        children: [
-          Text('A completely random idea:'),
-          Text(appState.current.asUpperCase),
-          ElevatedButton(
-              onPressed: () {
-                appState.getNext();
-              },
-              child: Text('Next'))
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Text('A completely random idea:'),
+            BigCard(pair: pair),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  appState.getNext();
+                },
+                child: Text('Next'))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BigCard extends StatelessWidget {
+  const BigCard({
+    super.key,
+    required this.pair,
+  });
+
+  final WordPair pair;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final style = theme.textTheme.displayMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+      fontWeight: FontWeight.bold,
+    );
+    return Card(
+      color: theme.colorScheme.primary,
+      elevation: 10,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          pair.asUpperCase,
+          style: style,
+          semanticsLabel: "${pair.first} ${pair.second}",
+        ),
       ),
     );
   }
