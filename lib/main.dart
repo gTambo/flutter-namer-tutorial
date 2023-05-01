@@ -55,6 +55,13 @@ class MyHomePage extends StatelessWidget {
       color: theme.colorScheme.onSecondary,
     );
 
+    IconData icon;
+    if (appState.favorites.contains(pair)) {
+      icon = Icons.favorite;
+    } else {
+      icon = Icons.favorite_border;
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: theme.colorScheme.secondary,
@@ -72,18 +79,16 @@ class MyHomePage extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      appState.toggleFavorite();
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.favorite_border_outlined,
-                        ),
-                        Text("Like"),
-                      ],
-                    )),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    appState.toggleFavorite();
+                  },
+                  icon: Icon(icon),
+                  label: Text('Like'),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
                 ElevatedButton(
                     onPressed: () {
                       appState.getNext();
