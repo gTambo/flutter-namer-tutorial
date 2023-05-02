@@ -45,6 +45,21 @@ class MyAppState extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void emptyFavorites() {
+    favorites = <WordPair>[];
+    notifyListeners();
+  }
+
+  void deleteAFavorite(word) {
+    if (favorites.contains(word)) {
+      favorites.remove(word);
+      print('removed $word');
+    } else {
+      print('nothing removed.');
+    }
+    notifyListeners();
+  }
 }
 
 class MyHomePage extends StatefulWidget {
@@ -133,16 +148,27 @@ class FavoritesPage extends StatelessWidget {
       color: theme.colorScheme.secondary,
       child: ListView(
         children: [
-          Padding(padding: const EdgeInsets.all(20)),
-          ListTile(
-              title: Text(
-            'Favorites: ',
-            style: theme.textTheme.displayMedium!.copyWith(
-              color: theme.colorScheme.onPrimary,
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              'You have ${faves.length} favorites:',
+              style: theme.textTheme.displayMedium!.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+              ),
             ),
-          )),
+          ),
+          Center(
+            child: ElevatedButton.icon(
+              onPressed: () => appState.emptyFavorites(),
+              icon: Icon(Icons.delete),
+              label: Text('Clear All'),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           for (var fave in faves)
             ListTile(
               leading: Icon(
@@ -152,6 +178,12 @@ class FavoritesPage extends StatelessWidget {
               title: Text(
                 fave.asLowerCase,
                 style: style,
+              ),
+              trailing: ElevatedButton(
+                onPressed: () => appState.deleteAFavorite(fave),
+                child: Icon(
+                  Icons.delete_forever_outlined,
+                ),
               ),
             ),
         ],
