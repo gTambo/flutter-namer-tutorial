@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = GeneratorPage();
         break;
       case 1:
-        page = Placeholder();
+        page = FavoritesPage();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -104,6 +104,59 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     });
+  }
+}
+
+class FavoritesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var faves = appState.favorites;
+    // Widget favesList;
+    // if (faves.isNotEmpty) {
+    //   favesList = ListView(children: );
+    // }
+    final theme = Theme.of(context);
+
+    final style = theme.textTheme.displaySmall!.copyWith(
+      color: theme.colorScheme.onSecondary,
+      fontWeight: FontWeight.normal,
+    );
+
+    if (faves.isEmpty) {
+      return Center(
+        child: Text('No favorites yet...'),
+      );
+    }
+
+    return Card(
+      color: theme.colorScheme.secondary,
+      child: ListView(
+        children: [
+          Padding(padding: const EdgeInsets.all(20)),
+          ListTile(
+              title: Text(
+            'Favorites: ',
+            style: theme.textTheme.displayMedium!.copyWith(
+              color: theme.colorScheme.onPrimary,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+            ),
+          )),
+          for (var fave in faves)
+            ListTile(
+              leading: Icon(
+                Icons.favorite,
+                color: theme.colorScheme.onSecondary,
+              ),
+              title: Text(
+                fave.asLowerCase,
+                style: style,
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
 
