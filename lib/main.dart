@@ -134,7 +134,7 @@ class FavoritesPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     final style = theme.textTheme.displaySmall!.copyWith(
-      color: theme.colorScheme.onSecondary,
+      color: theme.colorScheme.secondary,
       fontWeight: FontWeight.normal,
     );
 
@@ -144,16 +144,14 @@ class FavoritesPage extends StatelessWidget {
       );
     }
 
-    return Card(
-      color: theme.colorScheme.secondary,
-      child: ListView(
+    return ListView(
         children: [
           Padding(
             padding: const EdgeInsets.all(20),
             child: Text(
               'You have ${faves.length} favorites:',
               style: theme.textTheme.displayMedium!.copyWith(
-                color: theme.colorScheme.onPrimary,
+              color: theme.colorScheme.secondary,
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic,
               ),
@@ -172,8 +170,8 @@ class FavoritesPage extends StatelessWidget {
           for (var fave in faves)
             ListTile(
               leading: Icon(
-                Icons.favorite,
-                color: theme.colorScheme.onSecondary,
+              Icons.favorite,
+              color: theme.colorScheme.primary,
               ),
               title: Text(
                 fave.asLowerCase,
@@ -187,7 +185,7 @@ class FavoritesPage extends StatelessWidget {
               ),
             ),
         ],
-      ),
+      // ),
     );
   }
 }
